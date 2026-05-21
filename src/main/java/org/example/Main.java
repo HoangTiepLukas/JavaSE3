@@ -14,7 +14,7 @@ public class Main {
             List<Game> games = loadGames(input);
 
             // Generate required output files
-            exportGenres(games, Path.of("game_genres.txt"));
+            exportGenres(games, Path.of("game_genres.csv"));
             exportSimulatorGames(games, Path.of("simulator_games.csv"));
             exportPublishers(games, Path.of("game_publishers.csv"));
 
