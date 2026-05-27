@@ -6,19 +6,31 @@ import java.util.*;
 
 public class Main {
 
+    private static final Path OUTPUT_DIR = Path.of("outputs");
+
     static void main(String[] args) {
         Path input = Path.of("games.csv");
 
         try {
+            Files.createDirectories(OUTPUT_DIR);
+
             // Load all games from CSV
             List<Game> games = loadGames(input);
 
             // Generate required output files
-            exportGenres(games, Path.of("game_genres.csv"));
-            exportSimulatorGames(games, Path.of("simulator_games.csv"));
-            exportPublishers(games, Path.of("game_publishers.csv"));
+            Path genresOutput = OUTPUT_DIR.resolve("game_genres.csv");
+            Path simulatorOutput = OUTPUT_DIR.resolve("simulator_games.csv");
+            Path publishersOutput = OUTPUT_DIR.resolve("game_publishers.csv");
+
+            exportGenres(games, genresOutput);
+            exportSimulatorGames(games, simulatorOutput);
+            exportPublishers(games, publishersOutput);
 
             System.out.println("All files generated successfully.");
+            System.out.println("Saved to: " + OUTPUT_DIR.toAbsolutePath());
+            System.out.println("- " + genresOutput.toAbsolutePath());
+            System.out.println("- " + simulatorOutput.toAbsolutePath());
+            System.out.println("- " + publishersOutput.toAbsolutePath());
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
@@ -50,7 +62,7 @@ public class Main {
                 int released;
                 try {
                     released = Integer.parseInt(parts[1]);
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException _) {
                     released = 0;
                 }
                 String developer = parts[2];
